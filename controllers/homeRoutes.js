@@ -15,36 +15,6 @@ router.get('/', async (req, res) => {
 
     // Serialize data so the template can read it
     const blogs = postData.map((post) => post.get({ plain: true }));
-    // const blogs = [
-    //   {
-    //     id: 1,
-    //     title: "Title",
-    //     content: "Content",
-    //     author: "author",
-    //     date: "1/17/2022",
-
-
-    //   },
-    //   {
-    //     id: 2,
-    //     title: "Title2",
-    //     content: "Content",
-    //     author: "author",
-    //     date: "1/17/2022",
-
-
-    //   },
-    //   {
-    //     id: 3,
-    //     title: "Title1",
-    //     content: "Content",
-    //     author: "author",
-    //     date: "1/17/2022",
-
-
-    //   }
-    // ]
-    // Pass serialized data and session flag into template
     console.log(blogs);
     res.render('homepage', { 
       blogs, 
@@ -129,9 +99,17 @@ router.get('/edit-post/:id', withAuth, async (req, res) => {
       });
       
       const user = userData.get({ plain: true });
-  
-      console.log('Posts', user['Posts'][req.params.id])
-      const post = user['Posts'][req.params.id];
+      console.log('USSer', user['Posts'][1]);
+      let post;
+      for (i=0; i<user['Posts'].length; i++) {
+       console.log(user['Posts'][i].id)
+        if(user['Posts'][i].id==req.params.id){
+          post = user['Posts'][i];
+          console.log(post);
+        }
+      };
+      console.log('Posts', post)
+      
     res.render('edit-post', {
         ...post,
         logged_in: req.session.logged_in
