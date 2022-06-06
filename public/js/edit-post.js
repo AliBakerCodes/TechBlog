@@ -1,9 +1,10 @@
 const editPostHandler = async (evt)=> {
+    console.log('Saved Clicked')
     evt.preventDefault();
     const title = document.querySelector('#edit-post-title').value 
-    const body = document.querySelector('#edit-blog-textarea').value;
+    const body = document.querySelector('#edit-post-textarea').value;
     const postId= window.location.pathname.split('/')[2]
-    await fetch(`/api/posts/edit/${postID}`,{
+    await fetch(`/api/posts/edit/${postId}`,{
         method: 'POST',
         body: JSON.stringify({
             title,
@@ -35,7 +36,7 @@ const newDeletePostHandler = async (evt)=> {
 
 }
 
-document.querySelector('#create-post-form').addEventListener('submit', editPostHandler);
-document.querySelector('#delete-post-button').addEventListener('submit', newDeletePostHandler);
+document.querySelector('#edit-post-save-button').addEventListener('click', editPostHandler);
+document.querySelector('#delete-post-button').addEventListener('click', newDeletePostHandler);
 
 
