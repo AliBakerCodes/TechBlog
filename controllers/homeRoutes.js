@@ -99,35 +99,7 @@ router.get('/dashboard', withAuth, async (req, res) => {
     const user = userData.get({ plain: true });
 
     console.log('user', user)
-    // const blogs = [
-    //   {
-    //     id: 1,
-    //     title: "Title",
-    //     content: "Content",
-    //     author: "author",
-    //     date: "1/17/2022",
-
-
-    //   },
-    //   {
-    //     id: 2,
-    //     title: "Title2",
-    //     content: "Content",
-    //     author: "author",
-    //     date: "1/17/2022",
-
-
-    //   },
-    //   {
-    //     id: 3,
-    //     title: "Title1",
-    //     content: "Content",
-    //     author: "author",
-    //     date: "1/17/2022",
-
-
-    //   }
-    // ]
+   
     res.render('dashboard', {
       ...user,
       logged_in: req.session.logged_in
@@ -148,22 +120,21 @@ try {
   }
 });
 
-router.get('/edit-blog', async (req, res) => {
+router.get('/edit-post/:id', withAuth, async (req, res) => {
   try {
-    const blog = 
-      {
-        id: "id" ,
-        title: "Title",
-        content: "Content",
-        author: "author",
-        date: "1/17/2022",
-
-
-      };
-    
-    res.render('edit-blog', {
-        ...blog,
-        logged_in: true
+      // Find the logged in user based on the session ID
+      const userData = await User.findByPk(req.session.user_id, {
+        attributes: { exclude: ['password'] },
+        include: [{ model: Post }],
+      });
+      
+      const user = userData.get({ plain: true });
+  
+      console.log('Posts', user['Posts'][req.params.id])
+      const post = user['Posts'][req.params.id];
+    res.render('edit-post', {
+        ...post,
+        logged_in: req.session.logged_in
       });
     } catch (err) {
       res.status(500).json(err);

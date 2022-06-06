@@ -30,16 +30,32 @@ router.post('/comment', withAuth, async (req, res) => {
   }
 });
 
+router.post('/edit/:id', withAuth, async (req, res) => {
+  try {
+    const newPost = await Post.update({
+      ...req.body,
+      userId: req.session.user_id,
+    },
+    {
+      where: { id: req.params.id },
+    });
+    console.log(newPost);
+    res.status(200).json(newPost);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
+
 router.delete('/:id', withAuth, async (req, res) => {
   try {
-    const projectData = await Project.destroy({
+    const postData = await Post.destroy({
       where: {
         id: req.params.id,
         user_id: req.session.user_id,
       },
     });
 
-    if (!projectData) {
+    if (!postData) {
       res.status(404).json({ message: 'No project found with this id!' });
       return;
     }

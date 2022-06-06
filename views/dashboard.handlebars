@@ -1,15 +1,14 @@
 {{#if Posts}}
-{{#each Posts as |blog| }}
+{{#each Posts as |post| }}
 <div class = "row">
                 <div class="card">
-                    <h5 class="card-header">{{blog.title}}</h5>
+                    <h5 class="card-header">{{post.title}}</h5>
                     <div class="card-body">
-                      <p class="card-text">{{blog.body}}</p>
-                      <a href="/blogs/{{blog.id}}" class="btn btn-primary">Go somewhere</a>
+                      <p class="card-text">{{post.body}}</p>
+                      <a href="/blogs/{{post.id}}" class="btn btn-primary">Go somewhere</a>
                     </div>
                     <div class="card-footer text-muted">
-                    <a href="/edit-blog">Edit Post</a>
-                    <button id="delete-post-button">Delete Post</button>
+                    <a href="/edit-post/{{post.id}}">Edit Post</a>
                       </div>
                   </div>
             </div>

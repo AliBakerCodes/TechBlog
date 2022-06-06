@@ -3,7 +3,7 @@ const newPostHandler = async (evt)=> {
     const title = document.querySelector('#create-post-title').value 
     const body = document.querySelector('#create-post-content').value;
 
-    await fetch('/api/posts',{
+    await fetch('/api/posts/edit/',{
         method: 'POST',
         body: JSON.stringify({
             title,
@@ -17,4 +17,6 @@ const newPostHandler = async (evt)=> {
 }
 
 document.querySelector('#create-post-form').addEventListener('submit', newPostHandler);
+
+
 
