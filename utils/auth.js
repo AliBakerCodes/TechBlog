@@ -3,6 +3,7 @@ const withAuth = (req, res, next) => {
   console.log('Authorizing', req.session.logged_in)
   if (req.session.logged_in != true) {
     console.log('Redirecting to Login')
+    
     res.redirect('/login');
   } else {
     next();
