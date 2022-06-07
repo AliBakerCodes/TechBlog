@@ -4,7 +4,8 @@ const withAuth = require('../utils/auth');
 
 router.get('/', async (req, res) => {
   try {
-    // Get all projects and JOIN with user data
+    let userText;
+    let name;
     const postData = await Post.findAll({
       include: [
         {
@@ -15,10 +16,19 @@ router.get('/', async (req, res) => {
 
     // Serialize data so the template can read it
     const blogs = postData.map((post) => post.get({ plain: true }));
-    console.log(blogs);
+    if(req.session.logged_in) {
+      const userData = await User.findByPk(req.session.user_id, {
+        attributes: { exclude: ['password'] },
+      });
+  
+      userText = userData.get({ plain: true });
+      name= userText['username']
+      console.log('user', name)
+    };
     res.render('homepage', { 
       blogs, 
-      logged_in: true, 
+      logged_in: req.session.logged_in,
+      name: name
     });
   } catch (err) {
     res.status(500).json(err);
@@ -44,12 +54,24 @@ router.get('/blogs/:id', async (req, res) => {
         }
       ],
     });
+    let userText;
+    let name;
+    if(req.session.logged_in) {
+      const userData = await User.findByPk(req.session.user_id, {
+        attributes: { exclude: ['password'] },
+      });
+  
+      userText = userData.get({ plain: true });
+      name= userText['username']
+      console.log('user', name)
+    };
 
     const blog = postData.get({ plain: true });
     console.log(blog)
     res.render('blog-page', {
       ...blog,
-      logged_in: true,
+      logged_in: req.session.logged_in,
+      name: name
     });
   } catch (err) {
     res.status(500).json(err);
@@ -69,10 +91,21 @@ router.get('/dashboard', withAuth, async (req, res) => {
     const user = userData.get({ plain: true });
 
     console.log('user', user)
-   
+    let userText;
+    let name;
+    if(req.session.logged_in) {
+      const userData = await User.findByPk(req.session.user_id, {
+        attributes: { exclude: ['password'] },
+      });
+  
+      userText = userData.get({ plain: true });
+      name= userText['username']
+      console.log('user', name)
+    };
     res.render('dashboard', {
       ...user,
-      logged_in: req.session.logged_in
+      logged_in: req.session.logged_in,
+      name:name
     });
   } catch (err) {
     res.status(500).json(err);
@@ -83,7 +116,7 @@ router.get('/create-blog', async (req, res) => {
 try {
 
   res.render('create-blog', {
-      logged_in: true
+    logged_in: req.session.logged_in
     });
   } catch (err) {
     res.status(500).json(err);

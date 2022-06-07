@@ -34,7 +34,7 @@ const newDeletePostHandler = async (evt)=> {
 
 }
 
-document.querySelector('#edit-post-save-button').addEventListener('click', editPostHandler);
-document.querySelector('#delete-post-button').addEventListener('click', newDeletePostHandler);
+document.querySelector('#edit-post-save').addEventListener('click', editPostHandler);
+document.querySelector('#delete-post').addEventListener('click', newDeletePostHandler);
 
 
